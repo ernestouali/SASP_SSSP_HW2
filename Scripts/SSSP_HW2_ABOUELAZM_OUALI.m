@@ -255,45 +255,44 @@ for n = 1 : length(Fin)
     a23 = b23;      % Capacitor C4
     a26 = -b26;     % Inductor L3
 
-
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%% FORWARD SCAN %%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
     % Junction I
-    b25 = S_I(1, :) * [0; a26; a27];  % Scattering relation
+    b25 = S_I(1, :) * [a25; a26; a27];  % Scattering relation
 
     % Junction H
     a24 = b25;                          % Direct transmission from junction I to H
-    b22 = S_H(1,:) * [0; a23; a24];   % Scattering relation
+    b22 = S_H(1,:) * [a22; a23; a24];   % Scattering relation
 
     % Junction G
     a21 = b22;                          % Direct transmission from junction I to G
-    b19 = S_G(1,:) * [0; a20; a21];   % Scattering relation
+    b19 = S_G(1,:) * [a19; a20; a21];   % Scattering relation
 
     % Junction F
     a18 = b19;                          % Direct transmission from junction G to F
-    b16 = S_F(1,:) * [0; a17; a18];   % Scattering relation
+    b16 = S_F(1,:) * [a16; a17; a18];   % Scattering relation
     
     % Junction E
     a15 = b16;                          % Direct transmission from junction F to E
-    b13 = S_E(1,:) * [0; a14; a15];   % Scattering relation
+    b13 = S_E(1,:) * [a13; a14; a15];   % Scattering relation
 
     % Junction D
     a12 = b13;                          % Direct transmission from junction E to D
-    b10 = S_D(1,:) * [0; a11; a12];   % Scattering relation
+    b10 = S_D(1,:) * [a10; a11; a12];   % Scattering relation
 
     % Junction C
     a9 = b10;                           % Direct transmission from junction D to C
-    b7 = S_C(1,:) * [0; a8; a9];       % Scattering relation
+    b7 = S_C(1,:) * [a7; a8; a9];       % Scattering relation
 
     % Junction B
     a6 = b7;                            % Direct transmission from junction C to B
-    b4 = S_B(1,:) * [0; a5; a6];       % Scattering relation
+    b4 = S_B(1,:) * [a4; a5; a6];       % Scattering relation
 
     % Junction A
     a3 = b4;                            % Direct transmission from junction B to A
-    b1 = S_A(1,:) * [0; a2; a3];       % Scattering relation
+    b1 = S_A(1,:) * [a1; a2; a3];       % Scattering relation
 
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
