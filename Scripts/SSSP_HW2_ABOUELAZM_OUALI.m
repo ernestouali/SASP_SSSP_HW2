@@ -68,6 +68,7 @@ Fin = alpha .* vin;
 
 %% Adaption Conditions for ports connected to linear elements
 
+% Impedance declaration
 Z_R1 = R1;
 Z_R2 = R2;
 Z_R3 = R3;
@@ -94,8 +95,7 @@ Z_27 = Z_R3;
 %% Adaptation conditions for adaptors
 
 % Junction I 
-Z_25 = Z_26 + Z_27;     % adapted series on port 25
-
+Z_25 = Z_26 + Z_27;                     % adapted series on port 25
 
 % Junction H: 
 Z_24 = Z_25;                            % direct connection with port 25 of junction I
@@ -133,9 +133,8 @@ Z_3 = Z_4;                             % direct connection with port 4 of juncti
 Z_1 = Z_2 + Z_3;                       % adapted series on port 1
 
 %% Computing Scattering matrices
-B = [1 , 1 , 1];
-Q = [1 , 1 , 1];
 
+% Impedance matrices
 Z_A = diag([Z_1, Z_2, Z_3]);
 Z_B = diag([Z_4, Z_5, Z_6]);
 Z_C = diag([Z_7, Z_8, Z_9]);
@@ -146,19 +145,22 @@ Z_G = diag([Z_19, Z_20, Z_21]);
 Z_H = diag([Z_22, Z_23, Z_24]);
 Z_I = diag([Z_25, Z_26, Z_27]);
 
+% Tie-set and Cut-set matrices
+B = [1 , 1 , 1];
+Q = [1 , 1 , 1];
 
 % Series junction: S = 1 - 2 * Z * B' * (B * Z * B')^(-1) * B
-S_A = eye(3) - 2 * Z_A * B' * (B * Z_A * B')^(-1) * B;
-S_C = eye(3) - 2 * Z_C * B' * (B * Z_C * B')^(-1) * B;
-S_D = eye(3) - 2 * Z_D * B' * (B * Z_D * B')^(-1) * B;
-S_E = eye(3) - 2 * Z_E * B' * (B * Z_E * B')^(-1) * B;
-S_G = eye(3) - 2 * Z_G * B' * (B * Z_G * B')^(-1) * B;
-S_I = eye(3) - 2 * Z_I * B' * (B * Z_I * B')^(-1) * B;
+S_A = eye(3) - 2 * Z_A * B' * inv(B * Z_A * B') * B;
+S_C = eye(3) - 2 * Z_C * B' * inv(B * Z_C * B') * B;
+S_D = eye(3) - 2 * Z_D * B' * inv(B * Z_D * B') * B;
+S_E = eye(3) - 2 * Z_E * B' * inv(B * Z_E * B') * B;
+S_G = eye(3) - 2 * Z_G * B' * inv(B * Z_G * B') * B;
+S_I = eye(3) - 2 * Z_I * B' * inv(B * Z_I * B') * B;
 
 % Parallel junction: S = 2 * Q' * (Q * Z^(-1) * Q')^(-1) * Q * Z^(-1) - 1
-S_B = 2 * Q' * ( Q * inv(Z_B) * Q' )^(-1) * Q * inv(Z_B) - eye(3);
-S_F = 2 * Q' * ( Q * inv(Z_F) * Q' )^(-1) * Q * inv(Z_F) - eye(3);
-S_H = 2 * Q' * ( Q * inv(Z_H) * Q' )^(-1) * Q * inv(Z_H) - eye(3);
+S_B = 2 * Q' * inv( Q * inv(Z_B) * Q' ) * Q * inv(Z_B) - eye(3);
+S_F = 2 * Q' * inv( Q * inv(Z_F) * Q' ) * Q * inv(Z_F) - eye(3);
+S_H = 2 * Q' * inv( Q * inv(Z_H) * Q' ) * Q * inv(Z_H) - eye(3);
 
 
 %% Initialization of Waves
@@ -247,6 +249,7 @@ for n = 1 : length(Fin)
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%% UPDATE ACTIVE ELEMENTS %%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
     a5 = b5;        % Capacitor C1
     a8 = -b8;       % Inductor L1
     a14 = b14;      % Capacitor C2
